@@ -13,7 +13,13 @@ export default function HomeNavbar() {
           <SidebarTrigger />
           <Link href="/">
             <span className="p-4 flex items-center gap-1">
-              <Image src="/logo.svg" alt="Logo" width={32} height={32} />
+              <Image
+                src="/logo.svg"
+                alt="Logo"
+                className="w-[32px] h-[32px]"
+                width={32}
+                height={32}
+              />
               <p className="text-xl font-semibold tracking-tight">NewTube</p>
             </span>
           </Link>
