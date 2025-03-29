@@ -9,11 +9,11 @@ interface LayoutProps {
 export function HomeLayout({ children }: LayoutProps) {
   return (
     <SidebarProvider>
-      <div>
+      <div className="w-full">
         <HomeNavbar />
         <div className="flex min-h-screen pt-[4rem]">
           <HomeSidebar />
-          <main className="flex-1 overflow-y-auto">{children}</main>
+          <main className="flex-1 overflow-y-auto w-full">{children}</main>
         </div>
       </div>
     </SidebarProvider>
