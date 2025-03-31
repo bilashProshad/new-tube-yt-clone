@@ -1,5 +1,6 @@
-https://orm.drizzle.team/
-https://clerk.com/
-https://neon.tech/
-https://ngrok.com/
-https://upstash.com/
+https://orm.drizzle.team/ -> orm
+https://clerk.com/ -> auth
+https://neon.tech/ -> postgresql
+https://ngrok.com/ -> forward proxy
+https://upstash.com/ -> redis, rate limit
+https://www.mux.com/ -> video streaming
