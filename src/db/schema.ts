@@ -5,6 +5,7 @@ import {
   uuid,
   timestamp,
   uniqueIndex,
+  integer,
 } from "drizzle-orm/pg-core";
 
 export const users = pgTable(
@@ -59,6 +60,7 @@ export const videos = pgTable("videos", {
   muxTrackStatus: text("mux_track_status").unique(),
   thumbnailUrl: text("thumbnail_url"),
   previewUrl: text("preview_url"),
+  duration: integer("duration"),
   userId: uuid("user_id")
     .references(() => users.id, {
       onDelete: "cascade",
