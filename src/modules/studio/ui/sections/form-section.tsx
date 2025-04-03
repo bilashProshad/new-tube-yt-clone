@@ -101,6 +101,18 @@ function FormSectionSuspense({ videoId }: FormSectionProps) {
     },
   });
 
+  const restoreThumbnail = trpc.videos.restoreThumbnail.useMutation({
+    onSuccess: () => {
+      utils.studio.getMany.invalidate();
+      utils.studio.getOne.invalidate({ id: videoId });
+      toast.success("Thumbnail restored");
+      router.push("/studio");
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
   // Memoize the default values to prevent unnecessary re-renders
   const defaultValues = useMemo(() => video, [video]);
 
@@ -242,7 +254,11 @@ function FormSectionSuspense({ videoId }: FormSectionProps) {
                               <SparkleIcon className="size-4 mr-1" />{" "}
                               AI-Generated
                             </DropdownMenuItem>
-                            <DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() =>
+                                restoreThumbnail.mutate({ id: videoId })
+                              }
+                            >
                               <RotateCcwIcon className="size-4 mr-1" /> Restore
                             </DropdownMenuItem>
                           </DropdownMenuContent>
