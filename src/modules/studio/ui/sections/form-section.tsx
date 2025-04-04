@@ -113,6 +113,17 @@ function FormSectionSuspense({ videoId }: FormSectionProps) {
     },
   });
 
+  const generateThumbnail = trpc.videos.generateThumbnail.useMutation({
+    onSuccess: () => {
+      toast.success("Background job started", {
+        description: "This may take some time",
+      });
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
   // Memoize the default values to prevent unnecessary re-renders
   const defaultValues = useMemo(() => video, [video]);
 
@@ -250,7 +261,11 @@ function FormSectionSuspense({ videoId }: FormSectionProps) {
                             >
                               <ImagePlusIcon className="size-4 mr-1" /> Change
                             </DropdownMenuItem>
-                            <DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() =>
+                                generateThumbnail.mutate({ id: videoId })
+                              }
+                            >
                               <SparkleIcon className="size-4 mr-1" />{" "}
                               AI-Generated
                             </DropdownMenuItem>
