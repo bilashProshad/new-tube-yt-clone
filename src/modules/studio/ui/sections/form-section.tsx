@@ -15,11 +15,12 @@ import {
   CopyIcon,
   Globe2Icon,
   ImagePlusIcon,
+  Loader2Icon,
   LockIcon,
   MoreHorizontalIcon,
   MoreVerticalIcon,
   RotateCcwIcon,
-  SparkleIcon,
+  SparklesIcon,
   TrashIcon,
 } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -113,6 +114,28 @@ function FormSectionSuspense({ videoId }: FormSectionProps) {
     },
   });
 
+  const generateTitle = trpc.videos.generateTitle.useMutation({
+    onSuccess: () => {
+      toast.success("Background job started", {
+        description: "This may take some time",
+      });
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
+  const generateDescription = trpc.videos.generateDescription.useMutation({
+    onSuccess: () => {
+      toast.success("Background job started", {
+        description: "This may take some time",
+      });
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
   const generateThumbnail = trpc.videos.generateThumbnail.useMutation({
     onSuccess: () => {
       toast.success("Background job started", {
@@ -196,8 +219,25 @@ function FormSectionSuspense({ videoId }: FormSectionProps) {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      Title
-                      {/* TODO: Add AI generate button */}
+                      <div className="flex items-center gap-x-2">
+                        Title
+                        <Button
+                          size="icon"
+                          variant="outline"
+                          type="button"
+                          className="rounded-full size-6 [&_svg]:size-3"
+                          onClick={() => generateTitle.mutate({ id: videoId })}
+                          disabled={
+                            generateTitle.isPending || !video.muxTrackId
+                          }
+                        >
+                          {generateTitle.isPending ? (
+                            <Loader2Icon />
+                          ) : (
+                            <SparklesIcon className="size-3" />
+                          )}
+                        </Button>
+                      </div>
                     </FormLabel>
                     <FormControl>
                       <Input
@@ -215,8 +255,27 @@ function FormSectionSuspense({ videoId }: FormSectionProps) {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      Description
-                      {/* TODO: Add AI generate button */}
+                      <div className="flex items-center gap-x-2">
+                        Description
+                        <Button
+                          size="icon"
+                          variant="outline"
+                          type="button"
+                          className="rounded-full size-6 [&_svg]:size-3"
+                          onClick={() =>
+                            generateDescription.mutate({ id: videoId })
+                          }
+                          disabled={
+                            generateDescription.isPending || !video.muxTrackId
+                          }
+                        >
+                          {generateDescription.isPending ? (
+                            <Loader2Icon />
+                          ) : (
+                            <SparklesIcon className="size-3" />
+                          )}
+                        </Button>
+                      </div>
                     </FormLabel>
                     <FormControl>
                       <Textarea
@@ -266,7 +325,7 @@ function FormSectionSuspense({ videoId }: FormSectionProps) {
                                 generateThumbnail.mutate({ id: videoId })
                               }
                             >
-                              <SparkleIcon className="size-4 mr-1" />{" "}
+                              <SparklesIcon className="size-4 mr-1" />{" "}
                               AI-Generated
                             </DropdownMenuItem>
                             <DropdownMenuItem
