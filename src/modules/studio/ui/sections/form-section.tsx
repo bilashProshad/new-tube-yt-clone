@@ -52,6 +52,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { THUMBNAIL_FALLBACK } from "@/modules/videos/constants";
 import ThumbnailUploadModal from "../components/thumbnail-upload-modal";
+import ThumbnailGenerateModal from "../components/thumbnail-generate-modal";
 
 interface FormSectionProps {
   videoId: string;
@@ -73,6 +74,8 @@ function FormSectionSkeleton() {
 
 function FormSectionSuspense({ videoId }: FormSectionProps) {
   const [thumbnailModalOpen, setThumbnailModalOpen] = useState(false);
+  const [thumbnailGenerateModalOpen, setThumbnailGenerateModalOpen] =
+    useState(false);
 
   const router = useRouter();
   const [video] = trpc.studio.getOne.useSuspenseQuery({ id: videoId });
@@ -136,17 +139,6 @@ function FormSectionSuspense({ videoId }: FormSectionProps) {
     },
   });
 
-  const generateThumbnail = trpc.videos.generateThumbnail.useMutation({
-    onSuccess: () => {
-      toast.success("Background job started", {
-        description: "This may take some time",
-      });
-    },
-    onError: (error) => {
-      toast.error(error.message);
-    },
-  });
-
   // Memoize the default values to prevent unnecessary re-renders
   const defaultValues = useMemo(() => video, [video]);
 
@@ -180,6 +172,11 @@ function FormSectionSuspense({ videoId }: FormSectionProps) {
       <ThumbnailUploadModal
         open={thumbnailModalOpen}
         onOpenChange={setThumbnailModalOpen}
+        videoId={videoId}
+      />
+      <ThumbnailGenerateModal
+        open={thumbnailGenerateModalOpen}
+        onOpenChange={setThumbnailGenerateModalOpen}
         videoId={videoId}
       />
       <Form {...form}>
@@ -322,7 +319,7 @@ function FormSectionSuspense({ videoId }: FormSectionProps) {
                             </DropdownMenuItem>
                             <DropdownMenuItem
                               onClick={() =>
-                                generateThumbnail.mutate({ id: videoId })
+                                setThumbnailGenerateModalOpen(true)
                               }
                             >
                               <SparklesIcon className="size-4 mr-1" />{" "}
