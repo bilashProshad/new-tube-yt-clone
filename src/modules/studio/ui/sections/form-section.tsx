@@ -69,7 +69,67 @@ export default function FormSection({ videoId }: FormSectionProps) {
 }
 
 function FormSectionSkeleton() {
-  return <p>Loading...</p>;
+  return (
+    <div className="space-y-6 p-4">
+      {/* Header Skeleton */}
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <div className="h-6 w-1/3 bg-gray-200 rounded animate-pulse"></div>
+          <div className="h-4 w-1/2 bg-gray-200 rounded mt-2 animate-pulse"></div>
+        </div>
+        <div className="flex items-center gap-x-2">
+          <div className="h-10 w-20 bg-gray-200 rounded animate-pulse"></div>
+          <div className="h-10 w-10 bg-gray-200 rounded-full animate-pulse"></div>
+        </div>
+      </div>
+
+      {/* Form Skeleton */}
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+        {/* Left Column */}
+        <div className="space-y-8 lg:col-span-3">
+          <div className="space-y-4">
+            <div className="h-5 w-1/4 bg-gray-200 rounded animate-pulse"></div>
+            <div className="h-10 w-full bg-gray-200 rounded animate-pulse"></div>
+          </div>
+          <div className="space-y-4">
+            <div className="h-5 w-1/4 bg-gray-200 rounded animate-pulse"></div>
+            <div className="h-32 w-full bg-gray-200 rounded animate-pulse"></div>
+          </div>
+          <div className="space-y-4">
+            <div className="h-5 w-1/4 bg-gray-200 rounded animate-pulse"></div>
+            <div className="h-24 w-40 bg-gray-200 rounded animate-pulse"></div>
+          </div>
+          <div className="space-y-4">
+            <div className="h-5 w-1/4 bg-gray-200 rounded animate-pulse"></div>
+            <div className="h-10 w-full bg-gray-200 rounded animate-pulse"></div>
+          </div>
+        </div>
+
+        {/* Right Column */}
+        <div className="flex flex-col gap-y-8 lg:col-span-2">
+          <div className="flex flex-col gap-4 bg-gray-100 rounded-xl overflow-hidden h-fit p-4">
+            <div className="aspect-video bg-gray-200 rounded animate-pulse"></div>
+            <div className="space-y-4">
+              <div className="h-4 w-1/3 bg-gray-200 rounded animate-pulse"></div>
+              <div className="h-4 w-2/3 bg-gray-200 rounded animate-pulse"></div>
+            </div>
+            <div className="space-y-4">
+              <div className="h-4 w-1/3 bg-gray-200 rounded animate-pulse"></div>
+              <div className="h-4 w-1/4 bg-gray-200 rounded animate-pulse"></div>
+            </div>
+            <div className="space-y-4">
+              <div className="h-4 w-1/3 bg-gray-200 rounded animate-pulse"></div>
+              <div className="h-4 w-1/4 bg-gray-200 rounded animate-pulse"></div>
+            </div>
+          </div>
+          <div className="space-y-4">
+            <div className="h-5 w-1/4 bg-gray-200 rounded animate-pulse"></div>
+            <div className="h-10 w-full bg-gray-200 rounded animate-pulse"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 function FormSectionSuspense({ videoId }: FormSectionProps) {
@@ -189,7 +249,10 @@ function FormSectionSuspense({ videoId }: FormSectionProps) {
               </p>
             </div>
             <div className="flex items-center gap-x-2">
-              <Button type="submit" disabled={update.isPending}>
+              <Button
+                type="submit"
+                disabled={update.isPending || !form.formState.isDirty}
+              >
                 Save
               </Button>
               <DropdownMenu>
